@@ -1,0 +1,22 @@
+PROJECT_NAME = "Laboratory Work 1 - OOP Fundamentals"
+PROJECT_NUMBER = "Variant 1.4.2"
+PROJECT_BRIEF = "Implementation of an Unordered Multiset in C++"
+
+OUTPUT_DIRECTORY = docs
+
+/Users/thokoeve/Documents/ppios/untitled folder/lab1
+FILE_PATTERNS = *.h *.cpp
+RECURSIVE = NO
+
+INPUT = CantorMultiset.h CantorMultiset.cpp CantorSet.h CantorSet.cpp README.md
+USE_MDFILE_AS_MAINPAGE = README.md
+
+EXTRACT_ALL = YES
+EXTRACT_PRIVATE = YES
+EXTRACT_STATIC = YES
+
+GENERATE_HTML = YES
+GENERATE_LATEX = NO
+
+QUIET = YES
+WARN_IF_UNDOCUMENTED = NO
