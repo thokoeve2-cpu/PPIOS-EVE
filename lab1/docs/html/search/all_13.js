@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
-  ['remove_1',['remove',['../class_cantor_multiset.html#afb8d4ab562f80131e20dd5cd63ad2c81',1,'CantorMultiset']]],
-  ['rules_2',['4. Multiset Rules',['../index.html#autotoc_md5',1,'']]]
+  ['parsefromstring_0',['parsefromstring',['../class_cantor_multiset.html#aaa6cbe07575e97b13319195d9c0e18d0',1,'CantorMultiset::parseFromString()'],['../class_cantor_set.html#a8647d16f2593317ab883344ae42230ae',1,'CantorSet::parseFromString()']]],
+  ['powerset_1',['powerSet',['../class_cantor_multiset.html#ad2cb3c853a8b3d79820b0db22d4a7a1e',1,'CantorMultiset']]],
+  ['project_20description_2',['1. Project Description',['../index.html#autotoc_md2',1,'']]],
+  ['project_20files_3',['2. Project Files',['../index.html#autotoc_md3',1,'']]]
 ];

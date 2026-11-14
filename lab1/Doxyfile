@@ -4,7 +4,6 @@ PROJECT_BRIEF = "Implementation of an Unordered Multiset in C++"
 
 OUTPUT_DIRECTORY = docs
 
-/Users/thokoeve/Documents/ppios/untitled folder/lab1
 FILE_PATTERNS = *.h *.cpp
 RECURSIVE = NO
 
