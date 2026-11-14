@@ -1,0 +1,59 @@
+name: Lab 1 CI
+
+on:
+  push:
+    branches: [main, lab1-final-submission]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y clang llvm
+
+      - name: Build application
+        run: |
+          cd lab1
+          clang++ -std=c++17 -Wall -Wextra \
+            Lab1_SetAndMultiset.cpp CantorSet.cpp CantorMultiset.cpp \
+            -o Lab1App
+
+      - name: Build unit tests
+        run: |
+          cd lab1
+          clang++ -std=c++17 -Wall -Wextra \
+            -fprofile-instr-generate -fcoverage-mapping \
+            Lab1_Tests_Mac.cpp CantorMultiset.cpp \
+            -o Lab1Tests
+
+      - name: Run unit tests
+        run: |
+          cd lab1
+          LLVM_PROFILE_FILE="Lab1Tests.profraw" ./Lab1Tests
+
+      - name: Check code coverage
+        run: |
+          cd lab1
+          llvm-profdata merge -sparse Lab1Tests.profraw -o Lab1Tests.profdata
+          llvm-cov report ./Lab1Tests \
+            -instr-profile=Lab1Tests.profdata \
+            --ignore-filename-regex='Lab1_Tests_Mac.cpp' \
+            --fail-under-lines=90
+
+      - name: Static analysis
+        run: |
+          cd lab1
+          clang++ --analyze -std=c++17 \
+            CantorMultiset.cpp CantorSet.cpp
+
+      - name: Upload application artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Lab1-Linux
+          path: lab1/Lab1App
