@@ -5,6 +5,7 @@
 #include <map>
 #include <sstream>
 #include <utility>
+#include <functional>
 
 // Element containing an ordinary value
 CantorMultiset::Element::Element(const std::string& value)
