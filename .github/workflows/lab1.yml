@@ -41,10 +41,10 @@ jobs:
         run: |
           cd lab1
           llvm-profdata merge -sparse Lab1Tests.profraw -o Lab1Tests.profdata
-          llvm-cov report ./Lab1Tests \
+          llvm-cov export ./Lab1Tests \
             -instr-profile=Lab1Tests.profdata \
             --ignore-filename-regex='Lab1_Tests_Mac.cpp' \
-            --fail-under-lines=90
+            | python3 -c 'import json,sys; d=json.load(sys.stdin); p=d["data"][0]["totals"]["lines"]["percent"]; print(f"Line coverage: {p:.2f}%"); sys.exit(0 if p >= 90 else 1)'
 
       - name: Static analysis
         run: |
