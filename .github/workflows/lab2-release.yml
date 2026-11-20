@@ -1,0 +1,35 @@
+
+
+name: Lab 2 Publish Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Verify project
+        working-directory: lab2
+        run: mvn --batch-mode clean verify
+
+      - name: Publish runnable JAR
+        uses: softprops/action-gh-release@v2
+        with:
+          files: lab2/target/book-warehouse-lab2-1.0.0.jar
+          generate_release_notes: true

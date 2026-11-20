@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['testing_0',['6. Unit Testing',['../index.html#autotoc_md7',1,'']]],
-  ['trim_1',['trim',['../class_cantor_multiset.html#aa810260c7a08f29a6ecce16addb0f4bf',1,'CantorMultiset']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]],
+  ['remove_1',['remove',['../class_cantor_multiset.html#afb8d4ab562f80131e20dd5cd63ad2c81',1,'CantorMultiset']]],
+  ['rules_2',['4. Multiset Rules',['../index.html#autotoc_md5',1,'']]]
 ];

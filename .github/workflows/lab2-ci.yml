@@ -1,0 +1,41 @@
+
+name: Lab 2 Java CI
+
+on:
+  push:
+    branches: ["main", "develop", "feature/**", "lab2-book-warehouse"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Static code checks
+        working-directory: lab2
+        run: ./lint.sh
+
+      - name: Build, test, and check coverage
+        working-directory: lab2
+        run: mvn --batch-mode clean verify
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lab2-jacoco-report
+          path: lab2/target/site/jacoco/

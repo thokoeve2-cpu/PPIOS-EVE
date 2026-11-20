@@ -71,6 +71,7 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
@@ -82,6 +83,13 @@ $(function() {
 
 <p><code>#include &lt;<a class="el" href="_cantor_multiset_8h_source.html">CantorMultiset.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_cantor_multiset_1_1_element_less.html">ElementLess</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb20ef0071a129c08ec30ca06582ca50" id="r_aeb20ef0071a129c08ec30ca06582ca50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#aeb20ef0071a129c08ec30ca06582ca50">CantorMultiset</a> ()</td></tr>
@@ -127,11 +135,15 @@ Public Member Functions</h2></td></tr>
 Static Private Member Functions</h2></td></tr>
 <tr class="memitem:aa810260c7a08f29a6ecce16addb0f4bf" id="r_aa810260c7a08f29a6ecce16addb0f4bf"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#aa810260c7a08f29a6ecce16addb0f4bf">trim</a> (const std::string &amp;text)</td></tr>
 <tr class="separator:aa810260c7a08f29a6ecce16addb0f4bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa031f36d5b42ff315aa8e2320600ed1a" id="r_aa031f36d5b42ff315aa8e2320600ed1a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#aa031f36d5b42ff315aa8e2320600ed1a">makeElement</a> (const std::string &amp;item)</td></tr>
+<tr class="separator:aa031f36d5b42ff315aa8e2320600ed1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c613d46f1cee666bffc235c35cabe40" id="r_a8c613d46f1cee666bffc235c35cabe40"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#a8c613d46f1cee666bffc235c35cabe40">elementKey</a> (const <a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a> &amp;item)</td></tr>
+<tr class="separator:a8c613d46f1cee666bffc235c35cabe40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:aca59fad26a075225f4682e7ce792c3b2" id="r_aca59fad26a075225f4682e7ce792c3b2"><td class="memItemLeft" align="right" valign="top">std::multiset&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#aca59fad26a075225f4682e7ce792c3b2">elements</a></td></tr>
-<tr class="separator:aca59fad26a075225f4682e7ce792c3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ac8217d532591056325f4d057411b7d" id="r_a2ac8217d532591056325f4d057411b7d"><td class="memItemLeft" align="right" valign="top">std::multiset&lt; <a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a>, <a class="el" href="struct_cantor_multiset_1_1_element_less.html">ElementLess</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_cantor_multiset.html#a2ac8217d532591056325f4d057411b7d">elements</a></td></tr>
+<tr class="separator:a2ac8217d532591056325f4d057411b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -238,6 +250,32 @@ Friends</h2></td></tr>
 
 </div>
 </div>
+<a id="a8c613d46f1cee666bffc235c35cabe40" name="a8c613d46f1cee666bffc235c35cabe40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c613d46f1cee666bffc235c35cabe40">&#9670;&#160;</a></span>elementKey()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string CantorMultiset::elementKey </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a> &amp;&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ac13a16c3f2f2a0f7ddf21bea918a1a0f" name="ac13a16c3f2f2a0f7ddf21bea918a1a0f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac13a16c3f2f2a0f7ddf21bea918a1a0f">&#9670;&#160;</a></span>isEmpty()</h2>
 
@@ -251,6 +289,32 @@ Friends</h2></td></tr>
           <td> const</td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa031f36d5b42ff315aa8e2320600ed1a" name="aa031f36d5b42ff315aa8e2320600ed1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa031f36d5b42ff315aa8e2320600ed1a">&#9670;&#160;</a></span>makeElement()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_cantor_multiset_1_1_element.html">CantorMultiset::Element</a> CantorMultiset::makeElement </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>item</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -588,8 +652,8 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="aca59fad26a075225f4682e7ce792c3b2" name="aca59fad26a075225f4682e7ce792c3b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca59fad26a075225f4682e7ce792c3b2">&#9670;&#160;</a></span>elements</h2>
+<a id="a2ac8217d532591056325f4d057411b7d" name="a2ac8217d532591056325f4d057411b7d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ac8217d532591056325f4d057411b7d">&#9670;&#160;</a></span>elements</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -598,7 +662,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::multiset&lt;std::string&gt; CantorMultiset::elements</td>
+          <td class="memname">std::multiset&lt;<a class="el" href="struct_cantor_multiset_1_1_element.html">Element</a>, <a class="el" href="struct_cantor_multiset_1_1_element_less.html">ElementLess</a>&gt; CantorMultiset::elements</td>
         </tr>
       </table>
   </td>

@@ -13,7 +13,7 @@ The project demonstrates object-oriented programming principles, including encap
 - `CantorSet.h` and `CantorSet.cpp` – declaration and implementation of the Cantor Set class.
 - `CantorMultiset.h` and `CantorMultiset.cpp` – declaration and implementation of the Multiset class.
 - `Lab1_SetAndMultiset.cpp` – console application and user menu.
-- `Lab1_Tests_Mac.cpp` – portable unit test program for macOS.
+- `Lab1_Tests_Mac.cpp` – portable test program for macOS.
 - `README.md` – project description and instructions.
 
 ### 3. Implemented Multiset Operations
@@ -54,7 +54,7 @@ The implemented operations use the following multiplicity rules:
 
 ### 5. Compilation and Execution
 
-Open the project folder in the terminal.
+Open the `lab1` project folder in the terminal.
 
 Compile the application:
 
@@ -68,9 +68,9 @@ Run the application:
 ./Lab1App
 ```
 
-### 6. Unit Testing
+### 6. Tests
 
-The portable test program can be compiled on macOS using:
+The portable test program uses a custom test-checking harness. It can be compiled on macOS using:
 
 ```bash
 clang++ -std=c++17 -Wall -Wextra Lab1_Tests_Mac.cpp CantorMultiset.cpp -o Lab1Tests
@@ -82,48 +82,24 @@ Run the tests:
 ./Lab1Tests
 ```
 
-Latest test result:
+Latest locally reported test result:
 
-- Tests passed: 56
-- Tests failed: 0
-- Total tests: 56
+- Checks passed: 56
+- Checks failed: 0
+- Total checks: 56
 
-### 7. Code Coverage
+**Note:** These are checks implemented in the project's own test harness; they are not tests run through a third-party unit-testing framework.
 
-Code coverage was measured using the LLVM coverage tools included with Xcode Command Line Tools.
+### 7. Continuous Integration and Code Coverage
 
-Compile with coverage instrumentation:
+The GitHub Actions workflow builds the application and test program, runs the tests, checks line coverage, and performs static analysis.
 
-```bash
-clang++ -std=c++17 -O0 -fprofile-instr-generate -fcoverage-mapping Lab1_Tests_Mac.cpp CantorMultiset.cpp -o Lab1Tests
-```
+Latest verified GitHub Actions line-coverage result:
 
-Run the tests and generate profiling data:
+- Line coverage: **93.94%**
+- Required minimum: 90%
 
-```bash
-LLVM_PROFILE_FILE="Lab1Tests.profraw" ./Lab1Tests
-```
-
-Merge the profiling data:
-
-```bash
-xcrun llvm-profdata merge -sparse Lab1Tests.profraw -o Lab1Tests.profdata
-```
-
-Display the coverage report:
-
-```bash
-xcrun llvm-cov report ./Lab1Tests -instr-profile=Lab1Tests.profdata
-```
-
-Latest coverage results for `CantorMultiset.cpp`:
-
-- Line coverage: 94.92%
-- Region coverage: 95.51%
-- Function coverage: 100%
-- Branch coverage: 79.69%
-
-The implementation exceeds the required 90% line coverage.
+The workflow fails the coverage step if line coverage is below 90%.
 
 ### 8. Example Input
 
@@ -133,7 +109,7 @@ An example multiset containing repeated and nested elements is:
 
 ### 9. Development Environment
 
-- Operating system: macOS Ventura 13.7.8
+- Operating system: macOS
 - Programming language: C++
 - C++ standard: C++17
 - Compiler: Apple Clang
