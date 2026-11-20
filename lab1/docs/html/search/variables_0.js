@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['elements_0',['elements',['../class_cantor_multiset.html#aca59fad26a075225f4682e7ce792c3b2',1,'CantorMultiset::elements'],['../class_cantor_set.html#af83823d06a8f20bcf320f872f72b8ff0',1,'CantorSet::elements']]]
+  ['atom_0',['atom',['../struct_cantor_multiset_1_1_element.html#a6430b7349d8a2069a4d3ecaa70e2d991',1,'CantorMultiset::Element']]]
 ];

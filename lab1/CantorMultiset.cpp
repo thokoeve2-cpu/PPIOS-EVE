@@ -2,11 +2,31 @@
 
 #include <algorithm>
 #include <cctype>
-#include <functional>
 #include <map>
+#include <sstream>
 #include <utility>
+#include <functional>
 
-// Remove unnecessary spaces from an element
+// Element containing an ordinary value
+CantorMultiset::Element::Element(const std::string& value)
+    : atom(value), nested(nullptr) {
+}
+
+// Element containing another multiset
+CantorMultiset::Element::Element(const CantorMultiset& value)
+    : atom(""), nested(std::make_shared<CantorMultiset>(value)) {
+}
+
+// Compare elements using their consistent representations
+bool CantorMultiset::ElementLess::operator()(
+    const Element& a,
+    const Element& b
+) const {
+    return CantorMultiset::elementKey(a) <
+           CantorMultiset::elementKey(b);
+}
+
+// Remove unnecessary spaces
 std::string CantorMultiset::trim(const std::string& text) {
     size_t start = 0;
     size_t end = text.size();
@@ -24,18 +44,64 @@ std::string CantorMultiset::trim(const std::string& text) {
     return text.substr(start, end - start);
 }
 
+// Create an element from text
+CantorMultiset::Element CantorMultiset::makeElement(
+    const std::string& item
+) {
+    std::string text = trim(item);
+
+    if (text.size() >= 2 &&
+        text.front() == '{' &&
+        text.back() == '}') {
+        CantorMultiset nested;
+        nested.parseFromString(text);
+        return Element(nested);
+    }
+
+    return Element(text);
+}
+
+// Produce a consistent representation of an element
+std::string CantorMultiset::elementKey(const Element& item) {
+    if (item.nested) {
+        std::ostringstream output;
+        output << *item.nested;
+        return output.str();
+    }
+
+    return item.atom;
+}
+
 // Default constructor
 CantorMultiset::CantorMultiset() = default;
 
 // Copy constructor
-CantorMultiset::CantorMultiset(const CantorMultiset& other)
-    : elements(other.elements) {
+CantorMultiset::CantorMultiset(const CantorMultiset& other) {
+    for (const auto& item : other.elements) {
+        if (item.nested) {
+            elements.insert(Element(*item.nested));
+        }
+        else {
+            elements.insert(Element(item.atom));
+        }
+    }
 }
 
-// Copy assignment operator
-CantorMultiset& CantorMultiset::operator=(const CantorMultiset& other) {
+// Copy assignment
+CantorMultiset& CantorMultiset::operator=(
+    const CantorMultiset& other
+) {
     if (this != &other) {
-        elements = other.elements;
+        elements.clear();
+
+        for (const auto& item : other.elements) {
+            if (item.nested) {
+                elements.insert(Element(*item.nested));
+            }
+            else {
+                elements.insert(Element(item.atom));
+            }
+        }
     }
 
     return *this;
@@ -46,19 +112,19 @@ bool CantorMultiset::isEmpty() const {
     return elements.empty();
 }
 
-// Return the total number of elements, including duplicates
+// Return total number of elements, including duplicates
 size_t CantorMultiset::cardinality() const {
     return elements.size();
 }
 
 // Add an element
 void CantorMultiset::add(const std::string& item) {
-    elements.insert(trim(item));
+    elements.insert(makeElement(item));
 }
 
-// Remove one occurrence of an element
+// Remove one occurrence
 bool CantorMultiset::remove(const std::string& item) {
-    auto it = elements.find(trim(item));
+    auto it = elements.find(makeElement(item));
 
     if (it == elements.end()) {
         return false;
@@ -67,21 +133,22 @@ bool CantorMultiset::remove(const std::string& item) {
     elements.erase(it);
     return true;
 }
+
 // Check whether an element exists
 bool CantorMultiset::contains(const std::string& item) const {
-    return elements.find(trim(item)) != elements.end();
+    return elements.find(makeElement(item)) != elements.end();
 }
 
-// Check membership using the [] operator
+// Membership operator
 bool CantorMultiset::operator[](const std::string& item) const {
     return contains(item);
 }
 
-// Multiset union: add the multiplicities
+// Union: add multiplicities
 CantorMultiset CantorMultiset::operator+(
     const CantorMultiset& other
 ) const {
-    CantorMultiset result = *this;
+    CantorMultiset result(*this);
 
     result.elements.insert(
         other.elements.begin(),
@@ -91,51 +158,54 @@ CantorMultiset CantorMultiset::operator+(
     return result;
 }
 
-// Multiset intersection: keep the minimum multiplicity
 CantorMultiset CantorMultiset::operator*(
     const CantorMultiset& other
 ) const {
     CantorMultiset result;
 
-    for (const auto& item : elements) {
-        if (result.elements.count(item) < other.elements.count(item)) {
-            result.elements.insert(item);
+    auto first = elements.begin();
+    auto second = other.elements.begin();
+
+    while (first != elements.end() &&
+           second != other.elements.end()) {
+
+        std::string firstKey = elementKey(*first);
+        std::string secondKey = elementKey(*second);
+
+        if (firstKey < secondKey) {
+            ++first;
+        }
+        else if (secondKey < firstKey) {
+            ++second;
+        }
+        else {
+            result.elements.insert(*first);
+            ++first;
+            ++second;
         }
     }
 
     return result;
 }
 
-// Multiset difference: subtract multiplicities
+// Difference: subtract multiplicities
 CantorMultiset CantorMultiset::operator-(
     const CantorMultiset& other
 ) const {
-    CantorMultiset result;
-
-    std::map<std::string, size_t> remaining;
-
-    for (const auto& item : elements) {
-        remaining[item]++;
-    }
+    CantorMultiset result(*this);
 
     for (const auto& item : other.elements) {
-        auto it = remaining.find(item);
+        auto it = result.elements.find(item);
 
-        if (it != remaining.end() && it->second > 0) {
-            it->second--;
-        }
-    }
-
-    for (const auto& entry : remaining) {
-        for (size_t i = 0; i < entry.second; i++) {
-            result.add(entry.first);
+        if (it != result.elements.end()) {
+            result.elements.erase(it);
         }
     }
 
     return result;
 }
 
-// Union assignment
+// Compound union
 CantorMultiset& CantorMultiset::operator+=(
     const CantorMultiset& other
 ) {
@@ -143,7 +213,7 @@ CantorMultiset& CantorMultiset::operator+=(
     return *this;
 }
 
-// Intersection assignment
+// Compound intersection
 CantorMultiset& CantorMultiset::operator*=(
     const CantorMultiset& other
 ) {
@@ -151,7 +221,7 @@ CantorMultiset& CantorMultiset::operator*=(
     return *this;
 }
 
-// Difference assignment
+// Compound difference
 CantorMultiset& CantorMultiset::operator-=(
     const CantorMultiset& other
 ) {
@@ -163,7 +233,23 @@ CantorMultiset& CantorMultiset::operator-=(
 bool CantorMultiset::operator==(
     const CantorMultiset& other
 ) const {
-    return elements == other.elements;
+    if (elements.size() != other.elements.size()) {
+        return false;
+    }
+
+    auto first = elements.begin();
+    auto second = other.elements.begin();
+
+    while (first != elements.end()) {
+        if (elementKey(*first) != elementKey(*second)) {
+            return false;
+        }
+
+        ++first;
+        ++second;
+    }
+
+    return true;
 }
 
 // Inequality
@@ -176,17 +262,17 @@ bool CantorMultiset::operator!=(
 // Generate all distinct sub-multisets
 std::vector<CantorMultiset> CantorMultiset::powerSet() const {
     std::vector<CantorMultiset> results;
-
-    std::map<std::string, size_t> frequencies;
+    std::vector<std::pair<Element, size_t>> groups;
 
     for (const auto& item : elements) {
-        frequencies[item]++;
+        if (groups.empty() ||
+            elementKey(groups.back().first) != elementKey(item)) {
+            groups.push_back({item, 1});
+        }
+        else {
+            groups.back().second++;
+        }
     }
-
-    std::vector<std::pair<std::string, size_t>> groups(
-        frequencies.begin(),
-        frequencies.end()
-    );
 
     std::function<void(size_t, CantorMultiset)> generate =
         [&](size_t index, CantorMultiset current) {
@@ -195,13 +281,13 @@ std::vector<CantorMultiset> CantorMultiset::powerSet() const {
                 return;
             }
 
-            const std::string& item = groups[index].first;
+            const Element& item = groups[index].first;
             size_t frequency = groups[index].second;
 
             for (size_t count = 0; count <= frequency; count++) {
                 generate(index + 1, current);
 
-                current.add(item);
+                current.elements.insert(item);
             }
         };
 
@@ -210,24 +296,24 @@ std::vector<CantorMultiset> CantorMultiset::powerSet() const {
     return results;
 }
 
-// Parse a multiset string, preserving nested elements
+// Parse a multiset string recursively
 void CantorMultiset::parseFromString(const std::string& input) {
     elements.clear();
 
     std::string text = trim(input);
 
-    if (text.empty() ||
+    if (text.size() < 2 ||
         text.front() != '{' ||
         text.back() != '}') {
         return;
     }
 
-    text = text.substr(1, text.size() - 2);
+    std::string inner = text.substr(1, text.size() - 2);
 
     std::string current;
     int depth = 0;
 
-    for (char ch : text) {
+    for (char ch : inner) {
         if (ch == '{') {
             depth++;
             current += ch;
@@ -246,7 +332,7 @@ void CantorMultiset::parseFromString(const std::string& input) {
             std::string item = trim(current);
 
             if (!item.empty()) {
-                elements.insert(item);
+                elements.insert(makeElement(item));
             }
 
             current.clear();
@@ -264,7 +350,7 @@ void CantorMultiset::parseFromString(const std::string& input) {
     std::string finalItem = trim(current);
 
     if (!finalItem.empty()) {
-        elements.insert(finalItem);
+        elements.insert(makeElement(finalItem));
     }
 }
 
@@ -276,7 +362,14 @@ std::ostream& operator<<(
     os << "{ ";
 
     for (const auto& item : s.elements) {
-        os << item << " ";
+        if (item.nested) {
+            os << *item.nested;
+        }
+        else {
+            os << item.atom;
+        }
+
+        os << " ";
     }
 
     os << "}";
