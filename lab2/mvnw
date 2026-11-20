@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+VERSION="3.9.9"
+if command -v mvn >/dev/null 2>&1; then
+  exec mvn "$@"
+fi
+CACHE_ROOT="${HOME}/.m2/wrapper/dists"
+MAVEN_HOME="${CACHE_ROOT}/apache-maven-${VERSION}"
+if [[ ! -x "${MAVEN_HOME}/bin/mvn" ]]; then
+  mkdir -p "${CACHE_ROOT}"
+  ARCHIVE="${CACHE_ROOT}/apache-maven-${VERSION}-bin.tar.gz"
+  URL="https://archive.apache.org/dist/maven/maven-3/${VERSION}/binaries/apache-maven-${VERSION}-bin.tar.gz"
+  echo "Maven is not installed. Downloading Apache Maven ${VERSION}..."
+  curl --fail --location --retry 3 "$URL" --output "$ARCHIVE"
+  tar -xzf "$ARCHIVE" -C "$CACHE_ROOT"
+fi
+exec "${MAVEN_HOME}/bin/mvn" "$@"
